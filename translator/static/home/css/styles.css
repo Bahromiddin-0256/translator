@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Nunito", sans-serif;
+}
+
+:root {
+  --primary-color: 100, 92, 187;
+  --blue-color: 114, 134, 211;
+}
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body .container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+body .container .form-control {
+  width: 100%;
+  height: 300px;
+  max-width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body .container .form-control .card {
+  width: 100%;
+  height: 300px;
+  max-width: 40%;
+  min-width: 300px;
+}
+
+body .container .form-control .card textarea {
+  width: 100%;
+  height: 100%;
+  font-size: 1.12em;
+  border: 0.15em solid #cccccc;
+  border-radius: 1.2em;
+  resize: none;
+  outline: none;
+  padding: 0.5em;
+}
+
+body .container .form-control .card > template.output {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+body .container .row {
+  display: flex;
+  width: 90%;
+  height: max-content;
+  align-items: center;
+  justify-content: center;
+}
+
+body .container .row.selects {
+  justify-content: space-evenly;
+  max-width: 90%;
+}
+
+body .container .row .submit {
+  width: 250px;
+  height: 60px;
+  background-color: rgb(var(--primary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 1.2em;
+  color: rgb(255, 255, 255);
+  font-size: 1.12em;
+  outline: none;
+  cursor: pointer;
+  --wk-rp-color: rgba(255, 255, 255, 0.3);
+  --wk-rp-transition: 300;
+  overflow: hidden;
+  position: relative;
+}
+
+body .container .row .submit p {
+  pointer-events: none;
+  z-index: 1000;
+}
+
+body .container .row .submit svg {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(-50%, -50%);
+  position: none;
+  z-index: 1000;
+  display: none;
+}
+
+body .container .row .submit:disabled > svg {
+  display: block;
+}
+
+ion-icon {
+  font-size: 30px;
+}
+
+@media (max-width: 700px) {
+  body .container .form-control {
+    flex-direction: column;
+    height: 70%;
+  }
+
+  body .container .form-control .card {
+    max-width: 90%;
+  }
+
+  body .container .row.selects {
+    max-width: 80%;
+  }
+
+  ion-icon.rotate {
+    transform: rotate(90deg);
+  }
+}
+
+select {
+  font-size: 1.12em;
+  appearance: none;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  flex: 1;
+  padding: 0.5em;
+  color: rgb(255, 255, 255);
+  background-color: rgb(var(--primary-color));
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  width: 200px;
+  height: 2.5em;
+  border-radius: 1.2em;
+  overflow: hidden;
+}
+
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.6em;
+  background-color: rgb(var(--blue-color));
+  transition: 0.25s all ease;
+  pointer-events: none;
+  color: rgb(255, 255, 255);
+}
+
+.select:hover::after {
+  color: rgb(255, 255, 255);
+}

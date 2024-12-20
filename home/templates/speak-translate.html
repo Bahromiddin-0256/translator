@@ -1,0 +1,159 @@
+{% extends "home.html" %}
+{% load static %}
+{% block title %}Speak Translate{% endblock %}
+{% block style %} 
+
+
+#startStopBtn {
+  padding: 15px 30px;
+  background-color: #5cb85c; /* Green color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#startStopBtn.recording {
+  background-color: #d9534f; /* Red color */
+}
+
+#startStopBtn:hover {
+  background-color: #4cae4c; /* Slightly darker green */
+}
+
+#startStopBtn.recording:hover {
+  background-color: #c9302c; /* Slightly darker red */
+}
+
+#startStopBtn:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+{% endblock style %} 
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Speak Translate</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row selects" style="margin: 20px 0; align-items: left; ">
+           <div >From</div>
+            <div class="select" style="justify-content: left;"> 
+              <select id="from-language">
+                {% for lang in languages %}
+                      <option value="{{ lang.code }}" >{{ lang.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+            To
+            <div class="select">
+              <select id="to-language">
+                {% for lang in languages %}
+                      <option value="{{ lang.code }}" selected >{{ lang.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+    </div>
+
+  <div class="form-control">
+    <div class="card form-control">
+
+      <div style="padding: 50px 0">
+        <button id="startStopBtn" style="margin: 10px 20px">Start/Stop Recording</button>
+        <div id="recordholder"></div>
+      </div>
+
+      <div style=" min-width: 400px;">
+        <h3 id="yousaytext">👈 Ovozli xabarni tarjima qilish uchun </h3>
+        <img id="micro_gif" src="{% static 'home/img/micraphone.gif' %}" alt="Gif tasvir" 
+                                                  style="display: none;  width: 400px;">
+      </div>
+
+    </div>
+    <ion-icon name="arrow-forward-outline" class="rotate"></ion-icon>
+    <div class="card">
+      <textarea class="output" placeholder="Natija..." readonly></textarea>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+let isRecording = false;
+let mediaRecorder;
+let audioChunks = [];
+
+const startStopBtn = document.getElementById('startStopBtn');
+const languageOptions = document.getElementById('from-language');
+const tolanguageOptions = document.getElementById('to-language');
+const recordholder = document.getElementById('recordholder');
+const micro_gif = document.getElementById('micro_gif');
+
+startStopBtn.addEventListener('click', function() {
+  isRecording = !isRecording;
+  if (isRecording) {
+    startRecording();
+    startStopBtn.textContent = 'Stop Recording';
+  } else {
+    stopRecording();
+    startStopBtn.textContent = 'Start Recording';
+  }
+});
+
+function startRecording() {
+    recordholder.innerHTML = "<h3>Recording...</h3>";
+    micro_gif.style.display = "block";
+  navigator.mediaDevices.getUserMedia({ audio: true })
+
+    .then(stream => {
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.start();
+      mediaRecorder.addEventListener('dataavailable', event => {
+        audioChunks.push(event.data);
+      });
+    });
+}
+
+function stopRecording() {
+    recordholder.innerHTML = "";
+    micro_gif.style.display = "none";
+  mediaRecorder.stop();
+  mediaRecorder.addEventListener('stop', () => {
+    const audioBlob = new Blob(audioChunks);
+    const language = languageOptions.value;
+    const tolanguage = tolanguageOptions.value;
+    sendAudioToServer(audioBlob, language, tolanguage);
+    audioChunks = [];
+  });
+}
+
+
+
+function sendAudioToServer(blob, language, tolanguage) {
+    const formData = new FormData();
+    formData.append('language', language);
+    formData.append('tolanguage', tolanguage);
+    formData.append('audio_file', blob, 'recorded_audio.wav');
+
+    fetch('save-voice/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        document.querySelector('.output').value = data.output;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
+
+{% endblock script %}

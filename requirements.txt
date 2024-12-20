@@ -1,0 +1,8 @@
+clipboard~=0.0.4
+django~=4.2.8
+djangorestframework~=3.14.0
+translators~=5.8.9
+googletrans==3.1.0a0
+SpeechRecognition~=3.10.1
+soundfile~=0.12.1
+

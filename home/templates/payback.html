@@ -1,0 +1,8 @@
+{% extends 'home.html' %}
+{% block content %}
+<h1>Voice Playback</h1>
+<audio controls>
+    <source src="{{ voice_instance.audio_file.url }}" type="audio/wav">
+    Your browser does not support the audio element.
+</audio>
+{% endblock %}
