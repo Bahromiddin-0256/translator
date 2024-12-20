@@ -3,10 +3,10 @@
 {% block title %}Speak Translate{% endblock %}
 {% block style %} 
 
-
+<style>
 #startStopBtn {
   padding: 15px 30px;
-  background-color: #5cb85c; /* Green color */
+  background-color: #5cb8a3; /* Green color */
   color: white;
   border: none;
   border-radius: 5px;
@@ -31,6 +31,8 @@
   background-color: #ccc;
   cursor: default;
 }
+</style>
+
 {% endblock style %} 
 {% block content %}
 
@@ -85,7 +87,7 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
 let isRecording = false;
 let mediaRecorder;
 let audioChunks = [];
@@ -141,6 +143,7 @@ function sendAudioToServer(blob, language, tolanguage) {
     formData.append('language', language);
     formData.append('tolanguage', tolanguage);
     formData.append('audio_file', blob, 'recorded_audio.wav');
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
     fetch('save-voice/', {
         method: 'POST',
@@ -155,5 +158,5 @@ function sendAudioToServer(blob, language, tolanguage) {
         console.error(error);
     });
 }
-
+</script>
 {% endblock script %}

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'home/css/styles.css'%}" />
-    <style> {% block style %} {% endblock style %} </style>
+    {% block style %} {% endblock style %}
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -39,9 +39,10 @@
 
     <script src="{% static 'home/js/ripples.js'%}"></script>
     <script src="{% static 'home/js/main.js'%}"></script>
-    
+    {% block script %}
     <script> 
-    {% block script %}{% endblock script %}
-  </script>
+  </script>        
+    {% endblock script %}
+  
   </body>
 </html>

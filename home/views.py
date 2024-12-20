@@ -51,8 +51,9 @@ def save_voice(request):
     to_lang = request.POST.get('tolanguage')
     audio_file = request.FILES.get('audio_file')
 
-    if from_lang and audio_file and to_lang: 
-        voice_instance = Voice(audio_file=audio_file) 
+    if from_lang and audio_file and to_lang:
+        print(audio_file)
+        voice_instance = Voice(audio_file=audio_file)
         voice_instance.save()  
         file = str(settings.BASE_DIR) + voice_instance.audio_file.url 
         text = audio_file_to_text(file, from_lang, to_lang) 
